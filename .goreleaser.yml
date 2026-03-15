@@ -1,0 +1,47 @@
+version: 2
+
+project_name: polaris
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: polaris
+    main: ./cmd/polaris
+    binary: polaris
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - windows
+    goarch:
+      - amd64
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - id: polaris
+    builds:
+      - polaris
+    format: binary
+    name_template: "polaris-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+
+checksum:
+  name_template: "checksums.txt"
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+release:
+  github:
+    owner: mwlf01
+    name: Polaris
+  draft: false
+  prerelease: auto
+  name_template: "Polaris v{{ .Version }}"

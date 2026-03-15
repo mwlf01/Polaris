@@ -1,0 +1,45 @@
+# Polaris – Group Policy Examples
+#
+# Policies are applied via LGPO.exe, which is auto-installed from winget.
+# Include it from your main config:
+#   includes:
+#     - group-policy.yaml
+
+group_policy:
+  # Disable Windows Error Reporting
+  - scope: computer
+    path: SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting
+    name: Disabled
+    type: dword
+    value: 1
+    state: present
+
+  # Set Edge homepage
+  - scope: computer
+    path: SOFTWARE\Policies\Microsoft\Edge
+    name: HomepageLocation
+    type: string
+    value: "https://www.company.com"
+    state: present
+
+  # Disable Edge first-run experience
+  - scope: computer
+    path: SOFTWARE\Policies\Microsoft\Edge
+    name: HideFirstRunExperience
+    type: dword
+    value: 1
+    state: present
+
+  # User-scope policy example
+  # - scope: user
+  #   path: SOFTWARE\Policies\Microsoft\Office\16.0\Common
+  #   name: QMEnable
+  #   type: dword
+  #   value: 0
+  #   state: present
+
+  # Delete a policy value
+  # - scope: computer
+  #   path: SOFTWARE\Policies\Microsoft\Edge
+  #   name: OldPolicy
+  #   state: absent

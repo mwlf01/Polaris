@@ -1,0 +1,59 @@
+# Polaris – Registry Examples
+#
+# Include it from your main config:
+#   includes:
+#     - registry.yaml
+
+registry:
+  # String value
+  - path: HKLM\SOFTWARE\MyCompany\MyApp
+    name: AppSetting
+    type: string
+    value: "enabled"
+    state: present
+
+  # DWORD value
+  - path: HKLM\SOFTWARE\MyCompany\MyApp
+    name: MaxRetries
+    type: dword
+    value: 3
+    state: present
+
+  # QWORD value (64-bit)
+  - path: HKLM\SOFTWARE\MyCompany\MyApp
+    name: MaxFileSize
+    type: qword
+    value: 1073741824
+    state: present
+
+  # Expandable string (environment variables)
+  - path: HKLM\SOFTWARE\MyCompany\MyApp
+    name: LogPath
+    type: expand_string
+    value: "%SystemRoot%\\Logs\\MyApp"
+    state: present
+
+  # Multi-string (list of values)
+  - path: HKLM\SOFTWARE\MyCompany\MyApp
+    name: AllowedHosts
+    type: multi_string
+    value:
+      - "server1.example.com"
+      - "server2.example.com"
+    state: present
+
+  # Binary value (hex string)
+  - path: HKLM\SOFTWARE\MyCompany\MyApp
+    name: CustomData
+    type: binary
+    value: "48656c6c6f"
+    state: present
+
+  # Delete a specific value
+  # - path: HKLM\SOFTWARE\MyCompany\MyApp
+  #   name: OldSetting
+  #   state: absent
+
+  # Delete an entire key and all its values
+  # - path: HKLM\SOFTWARE\MyCompany\OldApp
+  #   state: absent

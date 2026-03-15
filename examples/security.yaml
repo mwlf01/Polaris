@@ -1,0 +1,36 @@
+# Polaris – Security Examples (Windows Update + Windows Defender)
+#
+# Include it from your main config:
+#   includes:
+#     - security.yaml
+
+# ── Windows Update ────────────────────────────────
+# All fields are optional. Only specified settings are applied.
+windows_update:
+  auto_update: notify               # disabled | notify | download_only | auto
+  active_hours:
+    start: 8
+    end: 17
+  defer_feature_updates_days: 30    # 0–365
+  defer_quality_updates_days: 7     # 0–30
+  no_auto_restart: true
+  microsoft_product_updates: true   # updates for Office, Edge, etc.
+
+# ── Windows Defender ──────────────────────────────
+# All fields are optional.
+windows_defender:
+  real_time_protection: true
+  cloud_protection: true
+  sample_submission: true            # automatic sample submission
+  pua_protection: true               # block potentially unwanted apps
+  exclusions:
+    paths:
+      - "C:\\Dev"
+      - "C:\\Tools"
+    extensions:
+      - "log"
+    processes:
+      - "devenv.exe"
+  scan_schedule:
+    day: wednesday                   # everyday | monday–sunday
+    time: "02:00"                    # HH:MM (24h)

@@ -1,0 +1,33 @@
+# Polaris – User Account Examples
+#
+# Include it from your main config:
+#   includes:
+#     - users.yaml
+
+users:
+  # Create a user and add to groups
+  - name: DevUser
+    full_name: "Developer Account"
+    description: "Local development account"
+    password: "SecureP@ss123"
+    groups:
+      - Administrators
+      - "Remote Desktop Users"
+    password_never_expires: true
+    account_disabled: false
+    state: present
+
+  # Create a restricted user (no admin)
+  - name: KioskUser
+    full_name: "Kiosk Account"
+    description: "Restricted kiosk account"
+    password: "K!osk2024"
+    groups:
+      - Users
+    password_never_expires: true
+    account_disabled: false
+    state: present
+
+  # Remove a user
+  # - name: OldUser
+  #   state: absent

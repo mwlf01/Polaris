@@ -1,0 +1,65 @@
+# Polaris – Example Configuration
+#
+# This is the main entry point. It uses includes to load modular configs.
+# See the individual files for detailed examples of each section.
+#
+# Files in this directory:
+#   config.yaml        ← you are here (main config)
+#   packages.yaml      ← package management (winget, msstore, choco)
+#   security.yaml      ← Windows Update + Windows Defender
+#   users.yaml         ← local user accounts
+#   registry.yaml      ← Windows Registry entries
+#   group-policy.yaml  ← local group policies via LGPO.exe
+
+# ── Includes ─────────────────────────────────────
+# Local files (relative to this file) and HTTP(S) URLs.
+# Remote files are cached locally with ETag support.
+includes:
+  - packages.yaml
+  - security.yaml
+  - users.yaml
+  - registry.yaml
+  - group-policy.yaml
+  # Remote URL examples:
+  # - https://example.com/polaris/base-packages.yaml
+  # - url: https://config.example.com/packages.yaml
+  #   auth:
+  #     type: basic
+  #     username: "polaris"
+  #     password: "secret"
+  #   propagate_auth: true
+  # - url: https://secure.example.com/policies.yaml
+  #   auth:
+  #     type: mtls
+  #     subject: "CN=polaris-client"
+  #     store: "My"
+
+# ── Compatibility ────────────────────────────────
+# All fields are optional. Each accepts a single value or a list.
+compatibility:
+  min_version: "1.0.0"
+  os: windows
+  arch:
+    - amd64
+    - arm64
+  windows_version:
+    - "10"
+    - "11"
+
+# ── Schedule (service mode) ──────────────────────
+# How often Polaris re-applies when running as a Windows service.
+# Go duration format: "15m", "30m", "1h", etc. Default: 15m.
+# Special values: "once" / "0" / "off" = run once, then stop.
+schedule:
+  interval: "30m"
+
+# ── Self-Update ──────────────────────────────────
+# JSON manifest URL. Polaris picks the binary matching its OS/arch.
+# Auth supports the same types as includes (basic, mtls).
+# In service mode the check runs at the end of every cycle.
+# update:
+#   url: "https://releases.example.com/polaris/update.json"
+#   auth:
+#     type: basic
+#     username: "polaris"
+#     password: "secret"
