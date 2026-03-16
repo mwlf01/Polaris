@@ -1,6 +1,6 @@
 # Package Management
 
-Polaris supports three package sources. Package managers are automatically updated before processing.
+Polaris supports four package sources. Package managers are automatically updated before processing.
 
 ## Configuration
 
@@ -9,7 +9,7 @@ packages:
   - name: Display Name
     id: Package-ID
     version: "1.0.0"       # optional
-    source: winget          # "winget", "msstore", or "choco"
+    source: winget          # "winget", "msstore", "choco", or "appx"
     state: present          # "present" or "absent"
 ```
 
@@ -20,7 +20,7 @@ packages:
 | `name`    | No       | Human-readable name (shown in output) |
 | `id`      | Yes      | Package ID for the respective source |
 | `version` | No       | Specific version to install |
-| `source`  | Yes      | Package source: `winget`, `msstore`, or `choco` |
+| `source`  | Yes      | Package source: `winget`, `msstore`, `choco`, or `appx` |
 | `state`   | Yes      | Desired state: `present` or `absent` |
 
 ---
@@ -67,6 +67,37 @@ Example:
   source: msstore
   state: present
 ```
+
+### AppX (`source: appx`)
+
+For pre-installed Windows apps (e.g. Feedback Hub, Clipchamp, Microsoft News) that are managed via `Get-AppxPackage` / `Remove-AppxPackage`. These apps cannot be reliably removed by WinGet using MS Store product IDs.
+
+Find AppX package names with:
+
+```powershell
+Get-AppxPackage -Name *keyword*
+```
+
+Example:
+
+```yaml
+- name: Feedback Hub
+  id: Microsoft.WindowsFeedbackHub
+  source: appx
+  state: absent
+
+- name: Clipchamp
+  id: Clipchamp.Clipchamp
+  source: appx
+  state: absent
+
+- name: Microsoft News
+  id: Microsoft.BingNews
+  source: appx
+  state: absent
+```
+
+> **Note:** The `appx` source only supports removing packages (`state: absent`). To install Store apps, use `source: msstore`. When removing, provisioning is also removed so the app does not return for new user profiles.
 
 ### Chocolatey (`source: choco`)
 

@@ -49,6 +49,40 @@ packages:
     source: choco
     state: present
 
+  # ── AppX (pre-installed Windows apps) ────────────
+  # Use source: appx for pre-provisioned Windows apps that winget
+  # cannot detect via MS Store product IDs. The ID is the AppX
+  # package name (find it with: Get-AppxPackage -Name *keyword*).
+  - name: Feedback Hub
+    id: Microsoft.WindowsFeedbackHub
+    source: appx
+    state: absent
+
+  - name: Clipchamp
+    id: Clipchamp.Clipchamp
+    source: appx
+    state: absent
+
+  - name: Microsoft News
+    id: Microsoft.BingNews
+    source: appx
+    state: absent
+
+  - name: Microsoft Sticky Notes
+    id: Microsoft.MicrosoftStickyNotes
+    source: appx
+    state: absent
+
+  - name: Microsoft To Do
+    id: Microsoft.Todos
+    source: appx
+    state: absent
+
+  - name: Outlook
+    id: Microsoft.OutlookForWindows
+    source: appx
+    state: absent
+
   # ── Remove a package ────────────────────────────
   # - name: Unwanted App
   #   id: Publisher.UnwantedApp

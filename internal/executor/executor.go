@@ -11,6 +11,7 @@ import (
 	"polaris/internal/grouppolicy"
 	"polaris/internal/platform"
 	"polaris/internal/provider"
+	"polaris/internal/provider/appx"
 	"polaris/internal/provider/choco"
 	"polaris/internal/provider/winget"
 	"polaris/internal/registry"
@@ -24,6 +25,7 @@ type Executor struct {
 	version string
 	winget  provider.PackageProvider
 	choco   provider.PackageProvider
+	appx    provider.PackageProvider
 }
 
 // New creates a new Executor. version is the running Polaris version (e.g. "1.0.0" or "dev").
@@ -48,6 +50,7 @@ func (e *Executor) Apply(cfg *config.Config) error {
 	}
 
 	e.winget = winget.New(plat.WingetPath())
+	e.appx = appx.New()
 	needsChoco := e.needsProvider(cfg, "choco")
 
 	var totalOK, totalChanged, totalFailed int
@@ -208,6 +211,8 @@ func (e *Executor) providerFor(pkg config.Package) provider.PackageProvider {
 	switch pkg.Source {
 	case "choco":
 		return e.choco
+	case "appx":
+		return e.appx
 	default:
 		return e.winget
 	}

@@ -338,10 +338,10 @@ func validate(cfg *Config) error {
 			return fmt.Errorf("package %q: 'state' must be 'present' or 'absent', got %q", pkg.ID, pkg.State)
 		}
 		if pkg.Source == "" {
-			return fmt.Errorf("package %q: 'source' is required (winget, msstore, or choco)", pkg.ID)
+			return fmt.Errorf("package %q: 'source' is required (winget, msstore, choco, or appx)", pkg.ID)
 		}
-		if pkg.Source != "winget" && pkg.Source != "msstore" && pkg.Source != "choco" {
-			return fmt.Errorf("package %q: 'source' must be 'winget', 'msstore', or 'choco', got %q", pkg.ID, pkg.Source)
+		if pkg.Source != "winget" && pkg.Source != "msstore" && pkg.Source != "choco" && pkg.Source != "appx" {
+			return fmt.Errorf("package %q: 'source' must be 'winget', 'msstore', 'choco', or 'appx', got %q", pkg.ID, pkg.Source)
 		}
 	}
 

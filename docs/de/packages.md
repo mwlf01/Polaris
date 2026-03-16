@@ -1,6 +1,6 @@
 # Paketverwaltung
 
-Polaris unterstützt drei Paketquellen. Die Paketmanager werden vor der Verarbeitung automatisch aktualisiert.
+Polaris unterstützt vier Paketquellen. Die Paketmanager werden vor der Verarbeitung automatisch aktualisiert.
 
 ## Konfiguration
 
@@ -9,7 +9,7 @@ packages:
   - name: Anzeigename
     id: Paket-ID
     version: "1.0.0"       # optional
-    source: winget          # "winget", "msstore" oder "choco"
+    source: winget          # "winget", "msstore", "choco" oder "appx"
     state: present          # "present" oder "absent"
 ```
 
@@ -20,7 +20,7 @@ packages:
 | `name`    | Nein    | Lesbarer Name (wird in der Ausgabe angezeigt) |
 | `id`      | Ja      | Paket-ID der jeweiligen Quelle |
 | `version` | Nein    | Bestimmte Version, die installiert werden soll |
-| `source`  | Ja      | Paketquelle: `winget`, `msstore` oder `choco` |
+| `source`  | Ja      | Paketquelle: `winget`, `msstore`, `choco` oder `appx` |
 | `state`   | Ja      | Gewünschter Zustand: `present` oder `absent` |
 
 ---
@@ -67,6 +67,37 @@ Beispiel:
   source: msstore
   state: present
 ```
+
+### AppX (`source: appx`)
+
+Für vorinstallierte Windows-Apps (z.B. Feedback Hub, Clipchamp, Microsoft News), die über `Get-AppxPackage` / `Remove-AppxPackage` verwaltet werden. Diese Apps lassen sich nicht zuverlässig über WinGet mit MS Store Produkt-IDs entfernen.
+
+Die AppX-Paket-ID findest du mit:
+
+```powershell
+Get-AppxPackage -Name *Suchbegriff*
+```
+
+Beispiel:
+
+```yaml
+- name: Feedback Hub
+  id: Microsoft.WindowsFeedbackHub
+  source: appx
+  state: absent
+
+- name: Clipchamp
+  id: Clipchamp.Clipchamp
+  source: appx
+  state: absent
+
+- name: Microsoft News
+  id: Microsoft.BingNews
+  source: appx
+  state: absent
+```
+
+> **Hinweis:** Die `appx`-Quelle unterstützt nur das Entfernen von Paketen (`state: absent`). Zum Installieren von Store-Apps verwende `source: msstore`. Beim Entfernen wird auch die Bereitstellung (Provisioning) aufgehoben, sodass die App nicht für neue Benutzerprofile zurückkehrt.
 
 ### Chocolatey (`source: choco`)
 
